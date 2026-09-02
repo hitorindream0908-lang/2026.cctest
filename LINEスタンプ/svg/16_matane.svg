@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 370 320" width="370" height="320">
+
+  <path d="M120,196 Q185,178 250,196 L262,214 Q185,196 108,214 Z" fill="#5aa0a0"/>
+  <path d="M112,210 Q185,192 258,210 L268,240 L102,240 Z" fill="#5aa0a0"/>
+  <path d="M108,214 Q185,196 262,214 L268,240 L263,240 Q185,206 107,240 L102,240 Z" fill="#4c8b8b" fill-opacity="0.35"/>
+  <path d="M168,190 L185,208 L202,190 L196,186 L185,198 L174,186 Z" fill="#eef3f3" stroke="#4c8b8b" stroke-width="1.5"/>
+
+  <ellipse cx="185" cy="118" rx="60" ry="63" fill="#f7d7bd" stroke="#5b4a3d" stroke-width="2.8"/>
+
+  <ellipse cx="127" cy="124" rx="10" ry="14" fill="#f7d7bd" stroke="#5b4a3d" stroke-width="2.5"/>
+  <ellipse cx="243" cy="124" rx="10" ry="14" fill="#f7d7bd" stroke="#5b4a3d" stroke-width="2.5"/>
+
+  <path d="M126,118 Q118,72 150,58 Q140,74 138,96 Q131,104 126,118 Z" fill="#c9cbd1"/>
+  <path d="M244,118 Q252,72 220,58 Q230,74 232,96 Q239,104 244,118 Z" fill="#c9cbd1"/>
+  <path d="M150,64 Q185,50 220,64 Q205,58 185,58 Q165,58 150,64 Z" fill="#c9cbd1"/>
+  <path d="M132,108 Q128,88 140,74 Q136,92 138,110 Z" fill="#b0b3bb"/>
+  <path d="M238,108 Q242,88 230,74 Q234,92 232,110 Z" fill="#b0b3bb"/>
+
+  <line x1="181" y1="116" x2="189" y2="116" stroke="#6b5847" stroke-width="3"/>
+  <line x1="142" y1="114" x2="131" y2="110" stroke="#6b5847" stroke-width="3"/>
+  <line x1="228" y1="114" x2="239" y2="110" stroke="#6b5847" stroke-width="3"/>
+  <circle cx="163" cy="116" r="21" fill="#ffffff" fill-opacity="0.18" stroke="#6b5847" stroke-width="3.5"/>
+  <circle cx="207" cy="116" r="21" fill="#ffffff" fill-opacity="0.18" stroke="#6b5847" stroke-width="3.5"/>
+
+  <path d="M148,90 Q163,82 178,88" stroke="#b0b3bb" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M192,88 Q207,82 222,90" stroke="#b0b3bb" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+  <path d="M153,119 Q163,108 173,119" stroke="#5b4a3d" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M197,119 Q207,108 217,119" stroke="#5b4a3d" stroke-width="4" fill="none" stroke-linecap="round"/>
+<path d="M183,124 Q179,134 187,135" stroke="#5b4a3d" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+
+  <path d="M166,145 Q185,164 204,145" stroke="#5b4a3d" stroke-width="3.4" fill="#fff" stroke-linecap="round"/>
+  <path d="M170,148 Q185,160 200,148 Z" fill="#7a3b3b"/>
+
+  <ellipse cx="147" cy="134" rx="11" ry="6.5" fill="#f6a98f" fill-opacity="0.55"/>
+  <ellipse cx="223" cy="134" rx="11" ry="6.5" fill="#f6a98f" fill-opacity="0.55"/>
+
+  <g stroke="#5b4a3d" stroke-width="2.6" stroke-linejoin="round">
+    <path d="M250,150 q22,-6 30,-30" fill="none"/>
+    <circle cx="282" cy="112" r="17" fill="#f7d7bd"/>
+    <path d="M276,104 v-16 M282,102 v-20 M288,104 v-16" stroke="#5b4a3d" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <text x="185" y="290" font-family="'IPAPGothic','IPAGothic','Noto Sans CJK JP',sans-serif" font-size="52" font-weight="bold"
+        text-anchor="middle" fill="#43423f" stroke="#ffffff" stroke-width="9"
+        paint-order="stroke" stroke-linejoin="round" letter-spacing="1">またね</text>
+</svg>
