@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_weather/app.dart';
+import 'package:my_weather/theme/app_colors.dart';
 
 void main() {
   testWidgets('4つのタブがあり、タップで画面が切り替わる', (tester) async {
@@ -28,5 +29,7 @@ void main() {
     await tester.pumpWidget(const MyWeatherApp());
     final context = tester.element(find.text('--°'));
     expect(Theme.of(context).scaffoldBackgroundColor, const Color(0xFF000000));
+    // 主役の面は背景の黒に溶けないよう、面の色にする
+    expect(AppPalette.of(context).hero, const Color(0xFF1D1D1F));
   });
 }

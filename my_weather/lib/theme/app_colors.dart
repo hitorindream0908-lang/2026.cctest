@@ -19,8 +19,10 @@ class AppColors {
   // 共通
   static const accentBlue = Color(0xFF0071E3);
 
-  /// 今日の天気の主役になる黒い面（ライト・ダーク共通）
+  /// 今日の天気の主役になる黒い面。
+  /// ダークモードでは背景が黒なので、面の色（#1d1d1f）にして背景と区別する。
   static const hero = Color(0xFF000000);
+  static const heroDark = surfaceDark;
   static const onHero = Color(0xFFFFFFFF);
 
   /// プレミアム要素だけに使う控えめな金色
@@ -35,18 +37,21 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.surface,
     required this.text,
     required this.subText,
+    required this.hero,
   });
 
   final Color background;
   final Color surface;
   final Color text;
   final Color subText;
+  final Color hero;
 
   static const light = AppPalette(
     background: AppColors.background,
     surface: AppColors.surface,
     text: AppColors.text,
     subText: AppColors.subText,
+    hero: AppColors.hero,
   );
 
   static const dark = AppPalette(
@@ -54,6 +59,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     surface: AppColors.surfaceDark,
     text: AppColors.textDark,
     subText: AppColors.subTextDark,
+    hero: AppColors.heroDark,
   );
 
   static AppPalette of(BuildContext context) =>
@@ -65,12 +71,14 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? surface,
     Color? text,
     Color? subText,
+    Color? hero,
   }) {
     return AppPalette(
       background: background ?? this.background,
       surface: surface ?? this.surface,
       text: text ?? this.text,
       subText: subText ?? this.subText,
+      hero: hero ?? this.hero,
     );
   }
 
@@ -82,6 +90,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
       surface: Color.lerp(surface, other.surface, t)!,
       text: Color.lerp(text, other.text, t)!,
       subText: Color.lerp(subText, other.subText, t)!,
+      hero: Color.lerp(hero, other.hero, t)!,
     );
   }
 }

@@ -39,7 +39,7 @@ class _HeroPlaceholder extends StatelessWidget {
         horizontal: AppTheme.cardPadding,
       ),
       decoration: BoxDecoration(
-        color: AppColors.hero,
+        color: AppPalette.of(context).hero,
         borderRadius: BorderRadius.circular(AppTheme.cardRadius),
       ),
       child: Column(
