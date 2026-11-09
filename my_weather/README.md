@@ -39,16 +39,18 @@
 
 ### 毎回
 
-```bash
-cd 2026.cctest
-git pull
-cd my_weather
-open -a Simulator
-flutter run
-```
+1. Xcodeを開き、メニューの **Xcode → Open Developer Tool → Device Hub** でiPhoneのシミュレータを起動します（Xcode 27では、以前の「Simulator」アプリの入り口がDevice Hubに変わっています。`open -a Simulator` は使えません）。
+2. ターミナルで次を実行します。
+   ```bash
+   cd ~/2026.cctest/my_weather
+   git pull
+   flutter devices
+   flutter run
+   ```
+   `flutter devices` の一覧に「iPhone 〜 (mobile)」が出ていればOKです。`flutter run` でどの端末か聞かれたら、iPhoneの番号を選びます。初回のビルドは1分ほどかかります。
 
-シミュレータが複数あって選択を聞かれたら、iPhoneの番号を選びます。起動中にターミナルで `r` を押すとコードの変更を即反映、`q` で終了します。
+起動中にターミナルで `r` を押すとコードの変更を即反映、`R` で再起動、`q` で終了します。
 
 ### ダークモードの確認
 
-シミュレータのメニューで **Features → Toggle Appearance**（または ⇧⌘A）を押すと、ライトとダークが切り替わります。
+シミュレータの画面を選んだ状態で ⇧⌘A を押すと、ライトとダークが切り替わります（効かない場合は、iPhoneの「設定 → 画面表示と明るさ」で切り替えます）。
