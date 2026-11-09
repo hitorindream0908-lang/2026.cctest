@@ -15,6 +15,8 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> {
+  static const placesTab = 2;
+
   int _index = 0;
 
   static const _tabs = [
@@ -47,11 +49,11 @@ class _HomeShellState extends State<HomeShell> {
       extendBody: true,
       body: IndexedStack(
         index: _index,
-        children: const [
-          TodayScreen(),
-          RecordsScreen(),
-          PlacesScreen(),
-          SettingsScreen(),
+        children: [
+          TodayScreen(onGoToPlaces: () => setState(() => _index = placesTab)),
+          const RecordsScreen(),
+          const PlacesScreen(),
+          const SettingsScreen(),
         ],
       ),
       bottomNavigationBar: BlurTabBar(
