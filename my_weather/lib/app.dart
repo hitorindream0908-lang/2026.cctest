@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
+import 'data/device_locator.dart';
 import 'data/place_search.dart';
 import 'screens/home_shell.dart';
 import 'state/app_state.dart';
@@ -14,11 +15,13 @@ class MyWeatherApp extends StatelessWidget {
     required this.state,
     required this.weather,
     required this.placeSearch,
+    required this.locator,
   });
 
   final AppState state;
   final WeatherController weather;
   final PlaceSearchApi placeSearch;
+  final DeviceLocator locator;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +30,7 @@ class MyWeatherApp extends StatelessWidget {
         ChangeNotifierProvider<AppState>.value(value: state),
         ChangeNotifierProvider<WeatherController>.value(value: weather),
         Provider<PlaceSearchApi>.value(value: placeSearch),
+        Provider<DeviceLocator>.value(value: locator),
       ],
       child: MaterialApp(
         title: 'My Weather',

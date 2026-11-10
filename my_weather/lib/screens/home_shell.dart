@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../state/app_state.dart';
 import '../widgets/blur_tab_bar.dart';
+import 'onboarding_screen.dart';
 import 'places_screen.dart';
 import 'records_screen.dart';
 import 'settings_screen.dart';
@@ -15,8 +18,6 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> {
-  static const placesTab = 2;
-
   int _index = 0;
 
   static const _tabs = [
@@ -44,13 +45,22 @@ class _HomeShellState extends State<HomeShell> {
 
   @override
   Widget build(BuildContext context) {
+    // 場所を1つ登録するまでは初回設定を出す
+    final hasLocation = context.select<AppState, bool>(
+      (s) => s.locations.isNotEmpty,
+    );
+    if (!hasLocation) {
+      _index = 0; // 登録が済んだら今日タブから始める
+      return const OnboardingScreen();
+    }
+
     return Scaffold(
       // 本文をタブバーの下まで描画し、タブバー越しにぼかして見せる
       extendBody: true,
       body: IndexedStack(
         index: _index,
         children: [
-          TodayScreen(onGoToPlaces: () => setState(() => _index = placesTab)),
+          const TodayScreen(),
           const RecordsScreen(),
           const PlacesScreen(),
           const SettingsScreen(),

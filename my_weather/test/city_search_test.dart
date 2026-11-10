@@ -5,12 +5,8 @@ import 'support/fake_place_search.dart';
 import 'support/memory_repository.dart';
 import 'support/test_app.dart';
 
-Future<void> openSearch(WidgetTester tester) async {
-  await tester.tap(find.text('場所').last);
-  await tester.pumpAndSettle();
-  await tester.tap(find.text('都市名で検索'));
-  await tester.pumpAndSettle();
-}
+Future<void> openSearch(WidgetTester tester) =>
+    openAddScreen(tester, onboardingLabel: '都市名で検索する', placesLabel: '都市名で検索');
 
 Future<void> doSearch(WidgetTester tester, String q) async {
   await tester.enterText(find.byType(TextField), q);
@@ -37,8 +33,7 @@ void main() {
     expect(repo.rows.single.timezone, 'Asia/Tokyo');
     expect(state.selectedLocation!.name, '東京都');
 
-    await tester.tap(find.text('今日').last);
-    await tester.pumpAndSettle();
+    // 初回設定が終わって今日タブになる
     expect(find.text('東京都'), findsOneWidget);
     expect(find.text('日本'), findsOneWidget); // 名前と同じ広域名は重ねて出さない
     expect(find.text('18°'), findsWidgets); // 天気も出る

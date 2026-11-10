@@ -1,26 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:my_weather/data/prefectures.dart';
 
 import 'support/fake_weather.dart';
 import 'support/memory_repository.dart';
 import 'support/test_app.dart';
 
-Future<void> addTokyo(MemoryRepository repo) async {
-  final tokyo = prefectureRegions
-      .expand((r) => r.prefectures)
-      .firstWhere((p) => p.prefecture == '東京都');
-  final saved = await repo.insertLocation(tokyo.toLocation(testNow));
-  repo.settings = repo.settings.copyWith(
-    homeLocationId: () => saved.id,
-    selectedLocationId: () => saved.id,
-  );
-}
-
 void main() {
   testWidgets('今日の天気で、最高・最低気温、降水確率、最大風速、取得時刻が見える', (tester) async {
     final repo = MemoryRepository();
-    await addTokyo(repo);
+    await seedTokyo(repo);
     await pumpTestApp(tester, repo: repo);
     await tester.pumpAndSettle();
 
@@ -45,7 +33,7 @@ void main() {
 
   testWidgets('通信できないときは、前回の天気と取得時刻を出す', (tester) async {
     final repo = MemoryRepository();
-    await addTokyo(repo);
+    await seedTokyo(repo);
     final api = FakeWeatherApi();
     var now = testNow;
     await pumpTestApp(tester, repo: repo, api: api, clock: () => now);
@@ -67,7 +55,7 @@ void main() {
 
   testWidgets('最初の取得に失敗したら、その旨を出す', (tester) async {
     final repo = MemoryRepository();
-    await addTokyo(repo);
+    await seedTokyo(repo);
     await pumpTestApp(tester, repo: repo, api: FakeWeatherApi()..fail = true);
     await tester.pumpAndSettle();
     expect(find.text('天気を取得できませんでした'), findsOneWidget);

@@ -136,4 +136,32 @@ void main() {
       ),
     );
   });
+
+  test('現在地の座標から、市区町村の名前を逆引きする', () async {
+    late http.Request asked;
+    final api = HttpPlaceSearch(
+      client: MockClient((req) async {
+        asked = req;
+        return jsonRes({
+          'name': '名古屋市',
+          'address': {'city': '名古屋市', 'province': '愛知県', 'country': '日本'},
+        });
+      }),
+    );
+    final r = await api.reverse(35.1815, 136.9066);
+    expect(asked.url.path, '/reverse');
+    expect(asked.headers['User-Agent'], startsWith('MyWeather/'));
+    expect(r.name, '名古屋市');
+    expect(r.admin1, '愛知県');
+    expect(r.country, '日本');
+    expect(r.lat, 35.1815); // 座標は端末の値のまま
+
+    // 地名が取れない海上などは「現在地」
+    final sea = HttpPlaceSearch.parseReverse(
+      {'error': 'Unable to geocode'},
+      30,
+      140,
+    );
+    expect(sea.name, '現在地');
+  });
 }

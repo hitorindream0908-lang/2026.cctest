@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app.dart';
+import 'data/device_locator.dart';
 import 'data/place_search.dart';
 import 'data/sqlite_repository.dart';
 import 'data/weather_api.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
       state: state,
       weather: weather,
       placeSearch: HttpPlaceSearch(),
+      locator: GeolocatorDeviceLocator(),
     ),
   );
 }

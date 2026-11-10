@@ -45,6 +45,9 @@ abstract class PlaceSearchApi {
 
   /// 座標からIANAタイムゾーンを求める
   Future<String> resolveTimezone(double lat, double lon);
+
+  /// 座標から地名（市区町村ほどの単位）を求める
+  Future<PlaceSearchResult> reverse(double lat, double lon);
 }
 
 class PlaceSearchOutcome {
@@ -173,6 +176,52 @@ class HttpPlaceSearch implements PlaceSearchApi {
           source: PlaceSearchSource.openMeteo,
         ),
     ];
+  }
+
+  static Uri reverseUri(double lat, double lon) =>
+      Uri.https('nominatim.openstreetmap.org', '/reverse', {
+        'lat': lat.toStringAsFixed(4),
+        'lon': lon.toStringAsFixed(4),
+        'format': 'jsonv2',
+        'addressdetails': '1',
+        'accept-language': 'ja',
+        'zoom': '10', // 市区町村の単位
+      });
+
+  @override
+  Future<PlaceSearchResult> reverse(double lat, double lon) async {
+    final json = await _getJson(
+      reverseUri(lat, lon),
+      headers: {'User-Agent': userAgent, 'Accept-Language': 'ja'},
+    ) as Map<String, dynamic>;
+    return parseReverse(json, lat, lon);
+  }
+
+  /// 逆引きの結果。地名が取れなければ「現在地」とし、座標は端末の値を使う
+  static PlaceSearchResult parseReverse(
+    Map<String, dynamic> json,
+    double lat,
+    double lon,
+  ) {
+    final addr = (json['address'] as Map?)?.cast<String, dynamic>() ?? const {};
+    String? pick(List<String> keys) {
+      for (final k in keys) {
+        final v = (k == 'name' ? json['name'] : addr[k]) as String?;
+        if (v != null && v.trim().isNotEmpty) return v.trim();
+      }
+      return null;
+    }
+
+    return PlaceSearchResult(
+      name:
+          pick(['name', 'city', 'town', 'village', 'municipality', 'county']) ??
+          '現在地',
+      admin1: pick(['state', 'province', 'region']) ?? '',
+      country: pick(['country']) ?? '',
+      lat: lat,
+      lon: lon,
+      source: PlaceSearchSource.nominatim,
+    );
   }
 
   /// 予報APIの timezone=auto で、座標のタイムゾーンを求める

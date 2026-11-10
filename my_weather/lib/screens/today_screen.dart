@@ -15,9 +15,7 @@ import '../widgets/tab_page.dart';
 
 /// 今日タブ。選択中の場所の天気（段階2-2）。服装の提案は段階3で表示する。
 class TodayScreen extends StatefulWidget {
-  const TodayScreen({super.key, required this.onGoToPlaces});
-
-  final VoidCallback onGoToPlaces;
+  const TodayScreen({super.key});
 
   @override
   State<TodayScreen> createState() => _TodayScreenState();
@@ -64,29 +62,11 @@ class _TodayScreenState extends State<TodayScreen> with WidgetsBindingObserver {
       }
     }
 
+    // 場所が1つもないときは初回設定が出るので、ここには来ない
     if (location == null) {
-      return TabPage(
+      return const TabPage(
         title: '今日',
-        children: [
-          const _Hero(location: null, day: null, loadingText: null),
-          const SizedBox(height: 16),
-          SurfaceCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  '天気を表示する場所を、1つ登録してください。',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 16),
-                FilledButton(
-                  onPressed: widget.onGoToPlaces,
-                  child: const Text('場所を登録する'),
-                ),
-              ],
-            ),
-          ),
-        ],
+        children: [_Hero(location: null, day: null, loadingText: null)],
       );
     }
 

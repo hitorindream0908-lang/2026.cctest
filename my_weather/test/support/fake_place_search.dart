@@ -44,6 +44,21 @@ class FakePlaceSearch implements PlaceSearchApi {
     };
   }
 
+  int reverseCalls = 0;
+
+  @override
+  Future<PlaceSearchResult> reverse(double lat, double lon) async {
+    reverseCalls++;
+    return PlaceSearchResult(
+      name: '京都市',
+      admin1: '京都府',
+      country: '日本',
+      lat: lat,
+      lon: lon,
+      source: PlaceSearchSource.nominatim,
+    );
+  }
+
   @override
   Future<String> resolveTimezone(double lat, double lon) async {
     timezoneCalls++;

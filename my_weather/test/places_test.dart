@@ -4,12 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'support/memory_repository.dart';
 import 'support/test_app.dart';
 
-Future<void> openPicker(WidgetTester tester) async {
-  await tester.tap(find.text('場所').last);
-  await tester.pumpAndSettle();
-  await tester.tap(find.text('都道府県から選ぶ'));
-  await tester.pumpAndSettle();
-}
+Future<void> openPicker(WidgetTester tester) =>
+    openAddScreen(tester, onboardingLabel: '都道府県から選ぶ', placesLabel: '都道府県から選ぶ');
 
 Future<void> tapPrefecture(WidgetTester tester, String name) async {
   final target = await scrollToPrefecture(tester, name);
@@ -39,17 +35,16 @@ void main() {
     expect(find.text('北海道・東北'), findsOneWidget);
     await tapPrefecture(tester, '岩手県');
 
-    // 場所タブに戻り、追加した旨と一覧が出る
+    // 初回設定が終わって今日タブになり、追加した旨が出る
     expect(find.text('盛岡市（岩手県）を追加しました'), findsOneWidget);
     expect(find.text('盛岡市'), findsOneWidget);
+    expect(find.text('岩手県（県庁所在地の予報）'), findsOneWidget);
+
+    await tester.tap(find.text('場所').last);
+    await tester.pumpAndSettle();
     expect(find.text('自宅'), findsOneWidget); // 最初の1件は自宅
     expect(repo.rows.single.name, '盛岡市');
     expect(repo.rows.single.timezone, 'Asia/Tokyo');
-
-    await tester.tap(find.text('今日').last);
-    await tester.pumpAndSettle();
-    expect(find.text('盛岡市'), findsOneWidget);
-    expect(find.text('岩手県（県庁所在地の予報）'), findsOneWidget);
   });
 
   testWidgets('登録済みの都道府県は「追加済み」と出て、重複登録されない', (tester) async {
