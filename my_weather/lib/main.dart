@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app.dart';
+import 'data/place_search.dart';
 import 'data/sqlite_repository.dart';
 import 'data/weather_api.dart';
 import 'state/app_state.dart';
@@ -12,5 +13,11 @@ Future<void> main() async {
   final state = AppState(repo);
   await state.load();
   final weather = WeatherController(repo, OpenMeteoApi());
-  runApp(MyWeatherApp(state: state, weather: weather));
+  runApp(
+    MyWeatherApp(
+      state: state,
+      weather: weather,
+      placeSearch: HttpPlaceSearch(),
+    ),
+  );
 }

@@ -3,6 +3,7 @@ import 'package:my_weather/app.dart';
 import 'package:my_weather/state/app_state.dart';
 import 'package:my_weather/state/weather_controller.dart';
 
+import 'fake_place_search.dart';
 import 'fake_weather.dart';
 import 'memory_repository.dart';
 
@@ -15,12 +16,19 @@ Future<AppState> pumpTestApp(
   MemoryRepository? repo,
   FakeWeatherApi? api,
   DateTime Function()? clock,
+  FakePlaceSearch? placeSearch,
 }) async {
   final r = repo ?? MemoryRepository();
   final c = clock ?? () => testNow;
   final state = AppState(r, clock: c);
   await state.load();
   final weather = WeatherController(r, api ?? FakeWeatherApi(), clock: c);
-  await tester.pumpWidget(MyWeatherApp(state: state, weather: weather));
+  await tester.pumpWidget(
+    MyWeatherApp(
+      state: state,
+      weather: weather,
+      placeSearch: placeSearch ?? FakePlaceSearch(),
+    ),
+  );
   return state;
 }

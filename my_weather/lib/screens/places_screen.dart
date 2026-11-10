@@ -7,6 +7,7 @@ import '../state/weather_controller.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/tab_page.dart';
+import 'city_search_screen.dart';
 import 'prefecture_picker_screen.dart';
 
 /// 場所タブ。登録済みの一覧（タップで表示対象を切り替え）、自宅の指定、追加。
@@ -51,14 +52,15 @@ class PlacesScreen extends StatelessWidget {
             _AddRow(
               icon: Icons.search,
               title: '都市名で検索',
-              note: '段階2-3で対応します',
-              onTap: null,
+              note: '日本語でもローマ字でも探せます',
+              onTap: () => _openAndReport(context, const CitySearchScreen()),
             ),
             _AddRow(
               icon: Icons.map_outlined,
               title: '都道府県から選ぶ',
               note: '県庁所在地の天気を表示します',
-              onTap: () => _openPrefecturePicker(context),
+              onTap: () =>
+                  _openAndReport(context, const PrefecturePickerScreen()),
             ),
           ],
         ),
@@ -74,10 +76,10 @@ class PlacesScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _openPrefecturePicker(BuildContext context) async {
-    final message = await Navigator.of(context).push<String>(
-      MaterialPageRoute(builder: (_) => const PrefecturePickerScreen()),
-    );
+  /// 追加用の画面を開き、閉じたときに結果の一文を下に出す
+  Future<void> _openAndReport(BuildContext context, Widget screen) async {
+    final message = await Navigator.of(context)
+        .push<String>(MaterialPageRoute(builder: (_) => screen));
     if (message != null && context.mounted) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
@@ -120,10 +122,7 @@ class _LocationRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = AppPalette.of(context);
     final state = context.read<AppState>();
-    final area = [
-      location.admin1,
-      location.country,
-    ].where((s) => s.isNotEmpty).join('・');
+    final area = location.areaLabel;
 
     return InkWell(
       onTap: () => state.select(location.id!),

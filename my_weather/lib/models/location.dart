@@ -61,6 +61,12 @@ class Location {
     createdAt: DateTime.parse(row['created_at'] as String),
   );
 
+  /// 「愛知県・日本」のような広域名と国の表示（名前と同じ広域名は省く）
+  String get areaLabel => [
+    if (admin1 != name) admin1,
+    country,
+  ].where((s) => s.isNotEmpty).join('・');
+
   /// 同じ場所とみなすか。名前・広域名・国が一致するか、
   /// 座標が2km以内なら同じ場所として扱い、重複登録しない。
   bool isSamePlaceAs(Location other) {

@@ -196,7 +196,7 @@ class _Hero extends StatelessWidget {
       area = '${capital.prefecture}（${capital.seatLabel}の予報）';
     } else {
       place = l.name;
-      area = [l.admin1, l.country].where((s) => s.isNotEmpty).join('・');
+      area = l.areaLabel;
     }
 
     final d = day;
