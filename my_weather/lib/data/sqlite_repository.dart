@@ -14,7 +14,7 @@ class SqliteRepository implements AppRepository {
 
   final Database _db;
 
-  static const _version = 1;
+  static const _version = 2;
 
   static Future<SqliteRepository> open({
     DatabaseFactory? factory,
@@ -60,6 +60,16 @@ class SqliteRepository implements AppRepository {
       ''');
       await db.insert('settings', const AppSettings().toRow());
     }
+    if (from < 2) {
+      await db.execute('''
+        CREATE TABLE weather_cache (
+          location_id INTEGER PRIMARY KEY
+            REFERENCES locations(id) ON DELETE CASCADE,
+          json TEXT NOT NULL,
+          fetched_at TEXT NOT NULL
+        )
+      ''');
+    }
   }
 
   Future<void> close() => _db.close();
@@ -97,4 +107,34 @@ class SqliteRepository implements AppRepository {
   Future<void> deleteLocation(int id) async {
     await _db.delete('locations', where: 'id = ?', whereArgs: [id]);
   }
+
+  @override
+  Future<WeatherCacheEntry?> loadWeatherCache(int locationId) async {
+    final rows = await _db.query(
+      'weather_cache',
+      where: 'location_id = ?',
+      whereArgs: [locationId],
+    );
+    if (rows.isEmpty) return null;
+    return WeatherCacheEntry(
+      json: rows.first['json'] as String,
+      fetchedAt: DateTime.parse(rows.first['fetched_at'] as String),
+    );
+  }
+
+  @override
+  Future<void> saveWeatherCache(int locationId, WeatherCacheEntry entry) async {
+    await _db.insert('weather_cache', {
+      'location_id': locationId,
+      'json': entry.json,
+      'fetched_at': entry.fetchedAt.toUtc().toIso8601String(),
+    }, conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  /// テスト用: 天気キャッシュの件数
+  Future<int> countWeatherCache() async =>
+      Sqflite.firstIntValue(
+        await _db.rawQuery('SELECT COUNT(*) FROM weather_cache'),
+      ) ??
+      0;
 }

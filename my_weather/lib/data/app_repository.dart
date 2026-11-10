@@ -12,4 +12,16 @@ abstract class AppRepository {
   /// 追加して、採番済みの場所を返す
   Future<Location> insertLocation(Location location);
   Future<void> deleteLocation(int id);
+
+  /// 天気キャッシュ（場所ごとに最新1件）
+  Future<WeatherCacheEntry?> loadWeatherCache(int locationId);
+  Future<void> saveWeatherCache(int locationId, WeatherCacheEntry entry);
+}
+
+class WeatherCacheEntry {
+  const WeatherCacheEntry({required this.json, required this.fetchedAt});
+
+  /// 予報のJSON一式
+  final String json;
+  final DateTime fetchedAt;
 }

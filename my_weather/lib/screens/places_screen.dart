@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/location.dart';
 import '../state/app_state.dart';
+import '../state/weather_controller.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../widgets/tab_page.dart';
@@ -176,7 +177,11 @@ class _LocationRow extends StatelessWidget {
                   await state.setHome(location.id!);
                 } else if (v == 'delete') {
                   final ok = await _confirmDelete(context);
-                  if (ok) await state.deleteLocation(location.id!);
+                  if (ok) {
+                    if (!context.mounted) return;
+                    context.read<WeatherController>().forget(location.id!);
+                    await state.deleteLocation(location.id!);
+                  }
                 }
               },
               itemBuilder: (_) => [

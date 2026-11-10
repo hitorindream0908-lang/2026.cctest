@@ -4,17 +4,22 @@ import 'package:provider/provider.dart';
 
 import 'screens/home_shell.dart';
 import 'state/app_state.dart';
+import 'state/weather_controller.dart';
 import 'theme/app_theme.dart';
 
 class MyWeatherApp extends StatelessWidget {
-  const MyWeatherApp({super.key, required this.state});
+  const MyWeatherApp({super.key, required this.state, required this.weather});
 
   final AppState state;
+  final WeatherController weather;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AppState>.value(
-      value: state,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AppState>.value(value: state),
+        ChangeNotifierProvider<WeatherController>.value(value: weather),
+      ],
       child: MaterialApp(
         title: 'My Weather',
         debugShowCheckedModeBanner: false,

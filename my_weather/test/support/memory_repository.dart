@@ -25,6 +25,20 @@ class MemoryRepository implements AppRepository {
   }
 
   @override
-  Future<void> deleteLocation(int id) async =>
-      rows.removeWhere((l) => l.id == id);
+  Future<void> deleteLocation(int id) async {
+    rows.removeWhere((l) => l.id == id);
+    weather.remove(id);
+  }
+
+  final Map<int, WeatherCacheEntry> weather = {};
+
+  @override
+  Future<WeatherCacheEntry?> loadWeatherCache(int locationId) async =>
+      weather[locationId];
+
+  @override
+  Future<void> saveWeatherCache(
+    int locationId,
+    WeatherCacheEntry entry,
+  ) async => weather[locationId] = entry;
 }

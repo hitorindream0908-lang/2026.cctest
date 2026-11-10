@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:my_weather/data/app_repository.dart';
 import 'package:my_weather/data/sqlite_repository.dart';
 import 'package:my_weather/models/location.dart';
 import 'package:my_weather/state/app_state.dart';
@@ -44,5 +45,39 @@ void main() {
     expect(reloaded.selectedLocation!.timezone, 'Asia/Tokyo');
     await repo.close();
     await databaseFactoryFfi.deleteDatabase(path);
+  });
+
+  test('天気キャッシュは場所ごとに1件で、場所を消すと一緒に消える', () async {
+    final repo = await SqliteRepository.open(
+      factory: databaseFactoryFfi,
+      path: inMemoryDatabasePath,
+    );
+    final l = await repo.insertLocation(
+      Location(
+        name: '那覇市',
+        admin1: '沖縄県',
+        country: '日本',
+        lat: 26.21,
+        lon: 127.68,
+        timezone: 'Asia/Tokyo',
+        createdAt: DateTime.utc(2026),
+      ),
+    );
+    await repo.saveWeatherCache(
+      l.id!,
+      WeatherCacheEntry(json: '{"a":1}', fetchedAt: DateTime.utc(2026, 1, 1)),
+    );
+    await repo.saveWeatherCache(
+      l.id!,
+      WeatherCacheEntry(json: '{"a":2}', fetchedAt: DateTime.utc(2026, 1, 2)),
+    );
+    expect(await repo.countWeatherCache(), 1);
+    final c = await repo.loadWeatherCache(l.id!);
+    expect(c!.json, '{"a":2}');
+    expect(c.fetchedAt, DateTime.utc(2026, 1, 2));
+
+    await repo.deleteLocation(l.id!);
+    expect(await repo.countWeatherCache(), 0);
+    await repo.close();
   });
 }
